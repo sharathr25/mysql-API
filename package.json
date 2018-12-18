@@ -1,0 +1,38 @@
+{
+  "name": "web_application",
+  "version": "1.0.0",
+  "description": "A website which allow you see some book details",
+  "main": "server.js",
+  "scripts": {
+    "test": "watch 'mocha'",
+    "lint": "watch 'eslint *.js'",
+    "coverage": "watch istanbul cover ./node_modules/mocha/bin/_mocha",
+    "lint-once": "eslint *.js",
+    "test-once": "mocha",
+    "coverage-once": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "lint-test": "watch 'npm run lint-once && npm run test-once'"
+  },
+  "author": "Sharath",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
+    "eslint": "^5.10.0",
+    "express": "^4.16.4",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "npm-watch": "^0.5.0",
+    "request": "^2.88.0",
+    "shelljs": "^0.8.3",
+    "supertest": "^3.3.0",
+    "winston": "^3.1.0"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
