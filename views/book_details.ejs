@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include head %>
+</head>
+
+<body class="container">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WEBBOOK</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="./">HOME</a></li>
+                <li class="active"><a href="/books.ejs">BOOKS</a></li>
+                <li><a href="/authors.ejs">AUTHORS</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main>
+           <div class="table-responsive">          
+                <table class="table">
+                  <tbody>
+                      <tr><td><img src="<%=data.imgsrc%>"></td></tr>
+                      <tr>
+                          <td>ISBN</td>
+                          <td>:<%= data.isbn %></td>
+                      </tr>
+                      <tr>
+                            <td>TITLE</td>
+                            <td>:<%= data.title %></td>
+                      </tr>
+                      <tr>
+                            <td>SUBTITLE</td>
+                            <td>:<%= data.subtitle %></td>
+                      </tr>
+                      <tr>
+                            <td>AUTHOR</td>
+                            <td>:<a href="/author/<%= data.author %>"><%= data.author %></a></td>
+                      </tr>
+                      <tr>
+                            <td>PUBLISHER</td>
+                            <td>:<%= data.publisher %></td>
+                       </tr>
+                       <tr>
+                            <td>PAGES</td>
+                            <td>:<%= data.pages %></td>
+                       </tr>
+                       <tr>
+                            <td>DESCRIPTION</td>
+                            <td>:<%= data.description %></td>
+                       </tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+    </main>
+</body>
+</html>
