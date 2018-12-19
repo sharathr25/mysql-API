@@ -11,9 +11,9 @@
             <a class="navbar-brand" href="#">WEBBOOK</a>
           </div>
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">HOME</a></li>
+            <li><a href="/">HOME</a></li>
             <li><a href="/books.ejs">BOOKS</a></li>
-            <li><a href="/authors.ejs">AUTHORS</a></li>
+            <li  class="active"><a href="/authors.ejs">AUTHORS</a></li>
           </ul>
         </div>
       </nav>
@@ -21,6 +21,10 @@
     <div class="table-responsive">          
         <table class="table">
           <tbody>
+              <tr>
+                  <td>ID</td>
+                  <td>:<%= data.id %></td>
+              </tr>
               <tr>
                   <td>NAME</td>
                   <td>:<%= data.name %></td>

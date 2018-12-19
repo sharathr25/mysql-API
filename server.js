@@ -5,37 +5,53 @@ const authorjson = require('./data/authors.json');
 const getBook = require('./getBookDetails.js');
 const getAuthor = require('./getAuthorDetails.js');
 
-// console.log(booksjson);
 const app = express();
-// const router = express.Router();
+const route = express.Router();
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-  res.render('home');
+route.get('/', (req, res) => {
+  res.status(200).render('home');
   logger.log('info', 'requested home page');
 });
-app.get('/books.ejs', (req, res) => {
+route.get('/books.ejs', (req, res) => {
   logger.log('info', 'requested books page');
-  res.render('books', { booksjson });
+  res.status(200).render('books', { booksjson });
 });
-app.get('/authors.ejs', (req, res) => {
+route.get('/authors.ejs', (req, res) => {
   logger.log('info', 'requested authors page');
-  res.render('authors', { authorjson });
+  res.status(200).render('authors', { authorjson });
 });
-app.get('/bookisbn/:isbn', (req, res) => {
-  // res.send(req.params.id);
-  const isbnNo = req.params.isbn;
-  res.render('book_details', { data: getBook(isbnNo) });
-});
-app.get('/author/:authorName', (req, res) => {
-  console.log(req.params.authorName);
-  res.render('author_details', { data: getAuthor(req.params.authorName) });
+route.use('/bookisbn/:isbn', (req, res, next) => {
+  if (getBook(req.params.isbn) === 'not found') {
+    res.status(500).send('Book not found');
+  } else { next(); }
 });
 
+route.get('/bookisbn/:isbn', (req, res) => {
+  const isbnNo = req.params.isbn;
+  const bookData = getBook(isbnNo);
+  const authorIdNo = getAuthor(bookData.author).id;
+  res.status(200).render('book_details', { data: bookData, authorId: authorIdNo });
+});
+
+route.use('/author/:id', (req, res, next) => {
+  if (getAuthor(req.params.id) === 'not found') {
+    res.status(500).send('Author not found');
+  } else { next(); }
+});
+route.get('/author/:id', (req, res) => {
+  res.status(200).render('author_details', { data: getAuthor(req.params.id) });
+});
+
+route.get('*', (req, res) => {
+  res.status(404).render('error');
+});
 const server = app.listen(3000, () => {
   console.log('app listening at port 3000');
   logger.log('info', 'listening');
 });
+
+app.use('/', route);
 
 module.exports = server;

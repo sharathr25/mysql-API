@@ -22,12 +22,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>8/8</span>
+        <span class='fraction'>41/41</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>8/8</span>
+        <span class='fraction'>41/41</span>
       </div>
     </div>
   </div>
@@ -55,7 +55,63 @@
 10
 11
 12
-13</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -64,19 +120,101 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
 const logger = require('./logger.js');
+const booksjson = require('./data/books.json');
+const authorjson = require('./data/authors.json');
+const getBook = require('./getBookDetails.js');
+const getAuthor = require('./getAuthorDetails.js');
 &nbsp;
+// console.log(booksjson);
 const app = express();
-app.get('/', (req, res) =&gt; {
-  res.status(200).send('ok');
+const route = express.Router();
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+&nbsp;
+route.get('/', (req, res) =&gt; {
+  res.status(200).render('home');
+  logger.log('info', 'requested home page');
 });
-const server = app.listen(6000, () =&gt; {
-  console.log('app listening at port 8081');
+route.get('/books.ejs', (req, res) =&gt; {
+  logger.log('info', 'requested books page');
+  res.status(200).render('books', { booksjson });
 });
+route.get('/authors.ejs', (req, res) =&gt; {
+  logger.log('info', 'requested authors page');
+  res.status(200).render('authors', { authorjson });
+});
+route.use('/bookisbn/:isbn', (req, res, next) =&gt; {
+  if (getBook(req.params.isbn) === 'not found') {
+    res.status(500).send('Book not found');
+  } else { next(); }
+});
+&nbsp;
+route.get('/bookisbn/:isbn', (req, res) =&gt; {
+  const isbnNo = req.params.isbn;
+  const bookData = getBook(isbnNo);
+  const authorIdNo = getAuthor(bookData.author).id;
+  res.status(200).render('book_details', { data: bookData, authorId: authorIdNo });
+});
+&nbsp;
+route.use('/author/:id', (req, res, next) =&gt; {
+  if (getAuthor(req.params.id) === 'not found') {
+    res.status(500).send('Author not found');
+  } else { next(); }
+});
+route.get('/author/:id', (req, res) =&gt; {
+  res.status(200).render('author_details', { data: getAuthor(req.params.id) });
+});
+&nbsp;
+route.get('*', (req, res) =&gt; {
+  res.status(404).render('error');
+});
+const server = app.listen(3000, () =&gt; {
+  console.log('app listening at port 3000');
+  logger.log('info', 'listening');
+});
+&nbsp;
+app.use('/', route);
 &nbsp;
 module.exports = server;
 &nbsp;</pre></td></tr>
@@ -85,7 +223,7 @@ module.exports = server;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 17 2018 17:40:08 GMT+0530 (IST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Dec 19 2018 10:54:25 GMT+0530 (IST)
 </div>
 </div>
 <script src="../prettify.js"></script>

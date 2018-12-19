@@ -1,9 +1,9 @@
 const authorjson = require('./data/authors.json');
 
-const getAuthorDetails = (authorData) => {
+const getAuthorDetails = (authorName) => {
   let index = -1;
   for (let i = 0; i < authorjson.authors.length; i += 1) {
-    if (authorData === authorjson.authors[i].name || authorData === authorjson.authors[i].id) {
+    if (authorName === authorjson.authors[i].name) {
       index = i;
       break;
     }
