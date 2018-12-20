@@ -6,7 +6,6 @@
 </head>
 
 <body class="container">
-
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -23,13 +22,13 @@
         <div class="table-responsive">
             <table class="table">
                 <tbody>
-                    <% for (let i = 0; i < booksjson.books.length; i += 1) { %>
+                    <% for (let i = 0; i < data.length; i += 1) { %>
                     <tr>
                         <td style="padding-top: 80px;">
                             <%= i+1 %> 
                         </td>
                         <td>
-                            <img src="<%= booksjson.books[i].imgsrc %>">
+                            <img src="<%= data[i].imgsrc %>">
                         </td>
                         <td style="margin-left:10px;">
                             <table>
@@ -39,7 +38,7 @@
                                         ISBN
                                     </td>
                                     <td>
-                                        :<%=booksjson.books[i].isbn %>
+                                        :<%=data[i].isbn %>
                                     </td>
                                 </tr>
                                 <tr>
@@ -47,7 +46,7 @@
                                         TITLE
                                     </td>
                                     <td>
-                                        <a href="bookisbn/<%=booksjson.books[i].isbn %>">:<%=booksjson.books[i].title %></a>
+                                        <a href="bookisbn/<%=data[i].isbn %>">:<%=data[i].title %></a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -55,7 +54,7 @@
                                         AUTHOR
                                     </td>
                                     <td>
-                                        <a href="/author/<%= booksjson.books[i].author %>">:<%=booksjson.books[i].author %></a>
+                                        <a href="author/<%=data[i].author_id%>"><%=data[i].author %></a>
                                     </td>
                                 </tr>
                             </table>

@@ -4,7 +4,6 @@
     <% include head %>
 </head>
 <body class="container">
-
     <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -21,13 +20,13 @@
           <div class="table-responsive">
                 <table class="table">
                     <tbody>
-                        <% for (let i = 0; i < authorjson.authors.length; i += 1) { %>
+                        <% for (let i = 0; i < authordata.length; i += 1) { %>
                         <tr>
                             <td>
                                 <%= i+1 %> 
                             </td>
                             <td>
-                                <a href="/author/<%= authorjson.authors[i].id %>"><%= authorjson.authors[i].name %></a>
+                                <a href="/author/<%= authordata[i].id %>"><%= authordata[i].name %></a>
                             </td>
                         </tr>
                         <%  } %>

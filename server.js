@@ -1,52 +1,83 @@
 const express = require('express');
 const logger = require('./logger.js');
 const booksjson = require('./data/books.json');
-const authorjson = require('./data/authors.json');
-const getBook = require('./getBookDetails.js');
-const getAuthor = require('./getAuthorDetails.js');
+const getDbData = require('./get_db_data.js');
 
 const app = express();
 const route = express.Router();
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+route.use((req, res, next) => {
+  logger.log('info', req.url);
+  next();
+});
+
 route.get('/', (req, res) => {
   res.status(200).render('home');
-  logger.log('info', 'requested home page');
 });
+
 route.get('/books.ejs', (req, res) => {
-  logger.log('info', 'requested books page');
-  res.status(200).render('books', { booksjson });
+  const promise = getDbData.getBooks();
+  promise.then().spread((data) => {
+    res.status(200).render('books', { booksjson, data });
+  });
 });
+
 route.get('/authors.ejs', (req, res) => {
-  logger.log('info', 'requested authors page');
-  res.status(200).render('authors', { authorjson });
+  const promise = getDbData.getAuthors();
+  promise.then().spread((authordata) => {
+    res.status(200).render('authors', { authordata });
+  });
 });
+
 route.use('/bookisbn/:isbn', (req, res, next) => {
-  if (getBook(req.params.isbn) === 'not found') {
-    res.status(500).send('Book not found');
-  } else { next(); }
+  const regex = /[0-9]+/;
+  if (regex.test(req.params.isbn)) {
+    const promise = getDbData.getBookByIsbn(req.params.isbn);
+    promise.then().spread((bookData) => {
+      if (bookData.length === 0) {
+        res.status(500).send('BOOK NOT FOUND');
+      } else next();
+    });
+  } else {
+    res.status(500).send('BOOK NOT FOUND');
+  }
 });
 
 route.get('/bookisbn/:isbn', (req, res) => {
   const isbnNo = req.params.isbn;
-  const bookData = getBook(isbnNo);
-  const authorIdNo = getAuthor(bookData.author).id;
-  res.status(200).render('book_details', { data: bookData, authorId: authorIdNo });
+  const promise = getDbData.getBookByIsbn(isbnNo);
+  promise.then().spread((bookData) => {
+    res.status(200).render('book_details', { data: bookData });
+  });
 });
 
 route.use('/author/:id', (req, res, next) => {
-  if (getAuthor(req.params.id) === 'not found') {
-    res.status(500).send('Author not found');
-  } else { next(); }
+  const regex = /[0-9]+/;
+  if (regex.test(req.params.id)) {
+    const promise = getDbData.getAuthorById(req.params.id);
+    promise.then().spread((authordata) => {
+      if (authordata.length === 0) {
+        res.status(500).send('AUTHOR NOT FOUND');
+      } else next();
+    });
+  } else {
+    res.status(500).send('AUTHOR NOT FOUND');
+  }
 });
+
 route.get('/author/:id', (req, res) => {
-  res.status(200).render('author_details', { data: getAuthor(req.params.id) });
+  const promise = getDbData.getAuthorById(req.params.id);
+  promise.then().spread((authordata) => {
+    res.status(200).render('author_details', { data: authordata });
+  });
 });
 
 route.get('*', (req, res) => {
   res.status(404).render('error');
 });
+
 const server = app.listen(3000, () => {
   console.log('app listening at port 3000');
   logger.log('info', 'listening');
