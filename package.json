@@ -10,7 +10,10 @@
     "lint-once": "eslint *.js",
     "test-once": "mocha",
     "coverage-once": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "lint-test": "watch 'npm run lint-once && npm run test-once'"
+    "lint-test": "watch 'npm run lint-once && npm run test-once'",
+    "create-database": "node create_database.js",
+    "create-tables": "node create_tables.js",
+    "insert-data-to-database": "node insert_to_table.js"
   },
   "author": "Sharath",
   "license": "MIT",
@@ -26,8 +29,10 @@
     "eslint": "^5.10.0",
     "express": "^4.16.4",
     "istanbul": "^0.4.5",
+    "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
     "mysql2-promise": "^0.1.4",
     "npm-watch": "^0.5.0",
     "promise-mysql": "^3.3.1",

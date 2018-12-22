@@ -21,20 +21,27 @@
         <table class="table">
           <tbody>
               <tr>
-                  <td>ID</td>
-                  <td>:<%= data[0].id %></td>
+                  <td>ID:</td>
+                  <td><%= data[0].id %></td>
               </tr>
               <tr>
-                  <td>NAME</td>
-                  <td>:<%= data[0].name %></td>
+                  <td>NAME:</td>
+                  <td><%= data[0].name %></td>
               </tr>
               <tr>
-                    <td>ABOUT</td>
+                    <td>ABOUT:</td>
                     <td>:<%= data[0].about %></td>
               </tr>
               <tr>
-                    <td>PLACE</td>
-                    <td>:<%= data[0].place %></td>
+                    <td>PLACE:</td>
+                    <td><%= data[0].place %></td>
+              </tr>
+              <tr>
+                <td>BOOKS:</td>
+                <td><% for(let i=0; i < data.length; i++) { %>
+                    <p><a href="/bookisbn/<%=data[i].isbn %>"><%=  data[i].title %></a></p>
+                    <% } %>
+                </td>
               </tr>
           </tbody>
         </table>

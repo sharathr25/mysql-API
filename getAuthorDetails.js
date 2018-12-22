@@ -1,17 +1,11 @@
-const authorjson = require('./data/authors.json');
+// const authorjson = require('./data/authors.json');
 
-const getAuthorDetails = (authorData) => {
-  let index = -1;
-  for (let i = 0; i < authorjson.authors.length; i += 1) {
-    if (authorData === authorjson.authors[i].name || authorData === authorjson.authors[i].id) {
-      index = i;
-      break;
-    }
-  }
-  if (index === -1) {
+const getAuthorDetails = (id, authorjson) => {
+  const author = authorjson.authors.filter(authors => authors.id === id);
+  if (author.length === 0) {
     return 'not found';
   }
-  return authorjson.authors[index];
+  return author[0];
 };
 
 module.exports = getAuthorDetails;

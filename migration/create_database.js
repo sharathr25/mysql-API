@@ -1,20 +1,16 @@
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const ownerdata = require('../data/owner_data');
 
-const con = mysql.createConnection({
-  host: ownerdata.host,
-  user: ownerdata.user,
-  password: ownerdata.password,
-});
-
-con.connect((err) => {
-  if (err) throw err;
-  const dataBaseName = 'webbook';
-  const sql = `create database ${dataBaseName}`;
-  console.log(sql);
-  con.query(sql, (er) => {
-    if (er) throw er;
-    console.log(`database ${dataBaseName} is created`);
+async function createDatabase() {
+  const connection = await mysql.createConnection({
+    host: ownerdata.host,
+    user: ownerdata.user,
+    password: ownerdata.password,
   });
-  con.end();
-});
+  const dataBaseName = 'test';
+  const sql = `create database ${dataBaseName}`;
+  await connection.query(sql);
+  connection.close();
+}
+
+createDatabase();

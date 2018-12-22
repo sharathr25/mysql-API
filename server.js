@@ -1,6 +1,5 @@
 const express = require('express');
 const logger = require('./logger.js');
-const booksjson = require('./data/books.json');
 const getDbData = require('./get_db_data.js');
 
 const app = express();
@@ -17,69 +16,77 @@ route.get('/', (req, res) => {
   res.status(200).render('home');
 });
 
-route.get('/books.ejs', (req, res) => {
-  const promise = getDbData.getBooks();
-  promise.then().spread((data) => {
-    res.status(200).render('books', { booksjson, data });
-  });
+route.get('/login', (req, res) => {
+  res.status(200).render('login');
 });
 
-route.get('/authors.ejs', (req, res) => {
-  const promise = getDbData.getAuthors();
-  promise.then().spread((authordata) => {
-    res.status(200).render('authors', { authordata });
-  });
+route.get('/register', (req, res) => {
+  res.status(200).render('register');
 });
 
-route.use('/bookisbn/:isbn', (req, res, next) => {
+route.get('/books.ejs', async (req, res) => {
+  const booksData = await getDbData.getBooks(false);
+  res.status(200).render('books', { data: booksData[0] });
+});
+
+route.get('/authors.ejs', async (req, res) => {
+  const data = await getDbData.getAuthors();
+  res.status(200).render('authors', { authordata: data[0] });
+});
+
+route.use('/bookisbn/:isbn', async (req, res, next) => {
   const regex = /[0-9]+/;
   if (regex.test(req.params.isbn)) {
-    const promise = getDbData.getBookByIsbn(req.params.isbn);
-    promise.then().spread((bookData) => {
-      if (bookData.length === 0) {
-        res.status(500).send('BOOK NOT FOUND');
-      } else next();
-    });
+    const bookData = await getDbData.getBookByIsbn(req.params.isbn, false);
+    if (bookData[0].length === 0) {
+      res.status(500).send('BOOK NOT FOUND');
+    } else next();
   } else {
     res.status(500).send('BOOK NOT FOUND');
   }
 });
 
-route.get('/bookisbn/:isbn', (req, res) => {
+route.get('/bookisbn/:isbn', async (req, res) => {
   const isbnNo = req.params.isbn;
-  const promise = getDbData.getBookByIsbn(isbnNo);
-  promise.then().spread((bookData) => {
-    res.status(200).render('book_details', { data: bookData });
-  });
+  const bookData = await getDbData.getBookByIsbn(isbnNo);
+  res.status(200).render('book_details', { data: bookData[0] });
 });
 
-route.use('/author/:id', (req, res, next) => {
+route.get('/bookbyauthor/:authorid', async (req, res) => {
+  const authorId = req.params.authorid;
+  const bookData = await getDbData.getBookById(authorId);
+  res.status(200).render('book_details', { data: bookData });
+});
+
+route.use('/author/:id', async (req, res, next) => {
   const regex = /[0-9]+/;
   if (regex.test(req.params.id)) {
-    const promise = getDbData.getAuthorById(req.params.id);
-    promise.then().spread((authordata) => {
-      if (authordata.length === 0) {
-        res.status(500).send('AUTHOR NOT FOUND');
-      } else next();
-    });
+    console.log(req.params.id);
+    const authordata = await getDbData.getAuthorById(req.params.id, false);
+    console.log(authordata[0].length);
+    if (authordata[0].length === 0) {
+      res.status(500).send('AUTHOR NOT FOUND');
+    } else next();
   } else {
     res.status(500).send('AUTHOR NOT FOUND');
   }
 });
 
-route.get('/author/:id', (req, res) => {
-  const promise = getDbData.getAuthorById(req.params.id);
-  promise.then().spread((authordata) => {
-    res.status(200).render('author_details', { data: authordata });
-  });
+route.get('/author/:id', async (req, res) => {
+  const authordata = await getDbData.getAuthorById(req.params.id, false);
+  res.status(200).render('author_details', { data: authordata[0] });
+});
+
+route.post('/adduser', (req, res) => {
+  res.status(200).send('hello new user');
 });
 
 route.get('*', (req, res) => {
   res.status(404).render('error');
 });
 
-const server = app.listen(3000, () => {
-  console.log('app listening at port 3000');
+const server = app.listen(4000, () => {
+  console.log('app listening at port 4000');
   logger.log('info', 'listening');
 });
 

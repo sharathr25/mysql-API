@@ -1,24 +1,59 @@
-const db = require('mysql2-promise')();
+const mysql = require('mysql2/promise');
 const ownerdata = require('./data/owner_data');
+const testdata = require('./data/test_data');
 
-function getBooksData() {
-  db.configure(ownerdata);
-  return db.query('select * from books');
+async function executeQuery(userData, sql) {
+  const connection = await mysql.createConnection(userData);
+  const data = await connection.query(sql);
+  connection.close();
+  return data;
 }
 
-function getBookDataByIsbn(isbn) {
-  db.configure(ownerdata);
-  return db.query(`select * from books where isbn=${isbn}`);
+async function executePrepared(userData, sql, parameters) {
+  const connection = await mysql.createConnection(userData);
+  const data = await connection.execute(sql, parameters);
+  connection.close();
+  return data;
 }
 
-function getAuthorsData() {
-  db.configure(ownerdata);
-  return db.query('select * from authors');
+async function getBooksData(test) {
+  const sql = 'select b.*,a.name from books as b,authors as a where b.author_id=a.id';
+  if (test === true) {
+    return executeQuery(testdata, sql);
+  }
+  return executeQuery(ownerdata, sql);
 }
 
-function getAuthorDataById(key) {
-  db.configure(ownerdata);
-  return db.query(`select * from authors where id=${key}`);
+async function getBookDataByIsbn(isbn, test) {
+  const sql = 'select b.*,a.name from books as b,authors as a where b.isbn=? AND b.author_id=a.id';
+  if (test) {
+    return executePrepared(testdata, sql, [isbn]);
+  }
+  return executePrepared(ownerdata, sql, [isbn]);
+}
+
+async function getAuthorsData(test) {
+  const sql = 'select * from authors';
+  if (test) {
+    return executeQuery(testdata, sql);
+  }
+  return executeQuery(ownerdata, sql);
+}
+
+async function getAuthorDataById(id, test) {
+  const sql = 'select a.*,b.* from authors as a,books as b where b.author_id=a.id and a.id=?';
+  if (test) {
+    return executePrepared(testdata, sql, [id]);
+  }
+  return executePrepared(ownerdata, sql, [id]);
+}
+
+async function getBookDataById(id, test) {
+  const sql = 'select distinct b.* from books as b,authors as a where b.author_id=?';
+  if (test) {
+    return executePrepared(testdata, sql, [id]);
+  }
+  return executePrepared(ownerdata, sql, [id]);
 }
 
 module.exports = {
@@ -26,4 +61,5 @@ module.exports = {
   getAuthorById: getAuthorDataById,
   getBooks: getBooksData,
   getBookByIsbn: getBookDataByIsbn,
+  getBookById: getBookDataById,
 };

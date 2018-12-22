@@ -1,17 +1,11 @@
-const booksjson = require('./data/books.json');
+// const booksjson = require('./data/books.json');
 
-const getBookDetails = (isbn) => {
-  let index = -1;
-  for (let i = 0; i < booksjson.books.length; i += 1) {
-    if (isbn === booksjson.books[i].isbn) {
-      index = i;
-      break;
-    }
-  }
-  if (index === -1) {
+function getBookDetails(isbn, booksjson) {
+  const book = booksjson.books.filter(books => books.isbn === isbn);
+  if (book.length === 0) {
     return 'not found';
   }
-  return booksjson.books[index];
-};
+  return book[0];
+}
 
 module.exports = getBookDetails;
