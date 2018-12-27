@@ -14,7 +14,8 @@
     "create-database": "node create_database.js",
     "create-tables": "node create_tables.js",
     "insert-data-to-database": "node insert_to_table.js",
-    "migrate": "npm run create-database && npm run create-tables && npm run insert-data-to-database"
+    "migrate": "npm run create-database && npm run create-tables && npm run insert-data-to-database",
+    "start": "node server.js"
   },
   "author": "Sharath",
   "license": "MIT",

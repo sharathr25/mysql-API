@@ -1,6 +1,6 @@
 // eslint-disable-next-line prefer-destructuring
 const expect = require('chai').expect;
-const Book = require('../../routes/books/book_controller.js');
+const book = require('../../routes/books/book_controller.js');
 
 // testing mysql book db
 describe('testing test database', () => {
@@ -17,14 +17,14 @@ describe('testing test database', () => {
       author_id: 1,
       name: 'osmani',
     };
-    const data = await Book.getBooks();
+    const data = await book.getBooks();
     const books = data[0];
     const bookData = JSON.stringify(books[0]);
     bookTestData = JSON.stringify(bookTestData);
     expect(bookData).to.be.equal(bookTestData);
   });
   it('getting book by isbn from test database', async () => {
-    const data = await Book.getBooks(123);
+    const data = await book.getBooks(123);
     let bookTestData = {
       isbn: 123,
       title: 'abcd',
@@ -43,7 +43,7 @@ describe('testing test database', () => {
     expect(bookData).to.be.equal(bookTestData);
   });
   it('Not getting book by wrong isbn from test database', async () => {
-    const data = await Book.getBookByIsbn(123333);
+    const data = await book.getBookByIsbn(123333);
     const book = data[0];
     expect(book).to.be.an('array');
     expect(book.length).to.be.equal(0);

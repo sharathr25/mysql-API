@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('./models/user');
+const user = require('./models/user');
 
 const mongoDB = 'mongodb://127.0.0.1:27017/users';
 
@@ -8,18 +8,18 @@ mongoose.Promise = global.Promise;
 
 async function addUsertoDb(userFormData) {
   // console.log(userFormData.password);
-  const user = new User({
+  const user = new user({
     _id: mongoose.Types.ObjectId(),
     username: `${userFormData.username}`,
     email: `${userFormData.email}`,
     password: `${userFormData.password}`,
   });
   await user.save();
-  // const data = await User.find({});
+  // const data = await user.find({});
 }
 
 async function findUserFromDb(email) {
-  return User.find({ email: `${email}` });
+  return user.find({ email: `${email}` });
 }
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 
 // addUsertoDb();
 
-// User.deleteMany({ username: 'sharath' }, (err) => {
+// user.deleteMany({ username: 'sharath' }, (err) => {
 // if (err) console.log(err);
 // });
 
