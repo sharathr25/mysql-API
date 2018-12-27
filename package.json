@@ -4,16 +4,17 @@
   "description": "A website which allow you see some book details",
   "main": "server.js",
   "scripts": {
-    "test": "watch 'mocha'",
+    "test": "watch 'mocha --recursive'",
     "lint": "watch 'eslint *.js'",
-    "coverage": "watch istanbul cover ./node_modules/mocha/bin/_mocha",
-    "lint-once": "eslint *.js",
-    "test-once": "mocha",
-    "coverage-once": "istanbul cover _mocha",
+    "coverage": "watch istanbul cover _mocha test/*",
+    "lint-once": "eslint */*.js",
+    "test-once": "mocha --recursive ",
+    "coverage-once": "istanbul cover _mocha test/*",
     "lint-test": "watch 'npm run lint-once && npm run test-once'",
     "create-database": "node create_database.js",
     "create-tables": "node create_tables.js",
-    "insert-data-to-database": "node insert_to_table.js"
+    "insert-data-to-database": "node insert_to_table.js",
+    "migrate": "npm run create-database && npm run create-tables && npm run insert-data-to-database"
   },
   "author": "Sharath",
   "license": "MIT",
@@ -33,6 +34,7 @@
     "eslint": "^5.10.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "express-validator": "^5.3.1",
     "istanbul": "^0.4.5",
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
@@ -49,6 +51,7 @@
     "request": "^2.88.0",
     "shelljs": "^0.8.3",
     "supertest": "^3.3.0",
+    "supertest-session": "^3.3.0",
     "winston": "^3.1.0"
   },
   "directories": {

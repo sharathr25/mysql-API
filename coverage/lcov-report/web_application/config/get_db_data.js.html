@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for web_application/config/get_db_data.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">web_application/config</a> get_db_data.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/28</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const mysql = <span class="cstat-no" title="statement not covered" >require('mysql2/promise');</span>
+const ownerdata = <span class="cstat-no" title="statement not covered" >require('./data/owner_data');</span>
+const testdata = <span class="cstat-no" title="statement not covered" >require('./data/test_data');</span>
+&nbsp;
+// to execute queries and returns a promise which resolves to db data
+async function <span class="fstat-no" title="function not covered" >executeQuery(</span>sql) {
+  let userData;
+<span class="cstat-no" title="statement not covered" >  if (process.env.test) {</span>
+<span class="cstat-no" title="statement not covered" >    userData = testdata;</span>
+  } else {
+<span class="cstat-no" title="statement not covered" >    userData = ownerdata;</span>
+  }
+  const connection = <span class="cstat-no" title="statement not covered" >await mysql.createConnection(userData);</span>
+  const data = <span class="cstat-no" title="statement not covered" >await connection.query(sql);</span>
+<span class="cstat-no" title="statement not covered" >  connection.close();</span>
+<span class="cstat-no" title="statement not covered" >  return data;</span>
+}
+&nbsp;
+// to execute prepared queries and returns a promise which resolves to db data
+async function <span class="fstat-no" title="function not covered" >executePrepared(</span>sql, parameters) {
+  let userData;
+<span class="cstat-no" title="statement not covered" >  if (process.env.test) {</span>
+<span class="cstat-no" title="statement not covered" >    userData = testdata;</span>
+  } else {
+<span class="cstat-no" title="statement not covered" >    userData = ownerdata;</span>
+  }
+  const connection = <span class="cstat-no" title="statement not covered" >await mysql.createConnection(userData);</span>
+  const data = <span class="cstat-no" title="statement not covered" >await connection.execute(sql, parameters);</span>
+<span class="cstat-no" title="statement not covered" >  connection.close();</span>
+<span class="cstat-no" title="statement not covered" >  return data;</span>
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getBooksData(</span>) {
+  const sql = <span class="cstat-no" title="statement not covered" >'select b.*,a.name from books as b,authors as a where b.author_id=a.id';</span>
+<span class="cstat-no" title="statement not covered" >  return executeQuery(sql);</span>
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getBookDataByIsbn(</span>isbn) {
+  const sql = <span class="cstat-no" title="statement not covered" >'select b.*,a.name from books as b,authors as a where b.isbn=? AND b.author_id=a.id';</span>
+<span class="cstat-no" title="statement not covered" >  return executePrepared(sql, [isbn]);</span>
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getAuthorsData(</span>) {
+  const sql = <span class="cstat-no" title="statement not covered" >'select * from authors';</span>
+<span class="cstat-no" title="statement not covered" >  return executeQuery(sql);</span>
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getAuthorDataById(</span>id) {
+  const sql = <span class="cstat-no" title="statement not covered" >'select a.*,b.* from authors as a,books as b where b.author_id=a.id and a.id=?';</span>
+<span class="cstat-no" title="statement not covered" >  return executePrepared(sql, [id]);</span>
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >getBookDataById(</span>id) {
+  const sql = <span class="cstat-no" title="statement not covered" >'select distinct b.* from books as b,authors as a where b.author_id=?';</span>
+<span class="cstat-no" title="statement not covered" >  return executePrepared(sql, [id]);</span>
+}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >module.exports = {</span>
+  getAuthors: getAuthorsData,
+  getAuthorById: getAuthorDataById,
+  getBooks: getBooksData,
+  getBookByIsbn: getBookDataByIsbn,
+  getBookById: getBookDataById,
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 27 2018 09:42:24 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

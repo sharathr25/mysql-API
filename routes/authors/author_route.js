@@ -1,26 +1,29 @@
 const express = require('express');
-const getAuthorDbData = require('./author_controller.js');
+const author = require('./author_controller.js');
+const middleware = require('../common/middleware.js');
 
 const route = express.Router();
 
-module.exports = route.get('/authors', async (req, res) => {
-  const data = await getAuthorDbData.getAuthors();
-  res.status(200).render('authors', { authordata: data[0] });
-});
-
-module.exports = route.use('/author/:id', async (req, res, next) => {
-  const regex = /[0-9]+/;
-  if (regex.test(req.params.id)) {
-    const authordata = await getAuthorDbData.getAuthorById(req.params.id);
-    if (authordata[0].length === 0) {
-      res.status(500).send('AUTHOR NOT FOUND');
-    } else next();
-  } else {
-    res.status(500).send('AUTHOR NOT FOUND');
+route.get('/authors', middleware.redirectLogin, async (req, res) => {
+  try {
+    const data = await author.getAuthors();
+    res.status(200).render('authors', { authordata: data[0] });
+  } catch (err) {
+    res.status(200).send('some error happend please go back');
   }
 });
 
-module.exports = route.get('/author/:id', async (req, res) => {
-  const authordata = await getAuthorDbData.getAuthorById(req.params.id, false);
-  res.status(200).render('author_details', { data: authordata[0] });
+route.get('/author/:id', middleware.redirectLogin, async (req, res) => {
+  const authorId = req.params.id;
+  const regex = /[0-9]+/;
+  if (regex.test(authorId)) {
+    const data = await author.getAuthorById(authorId);
+    if (typeof data !== 'undefined' && data[0].length === 0) {
+      res.status(404).send('AUTHOR NOT FOUND');
+    } else res.status(200).render('author_details', { data: data[0] });
+  } else {
+    res.status(404).send('AUTHOR NOT FOUND');
+  }
 });
+
+module.exports = route;

@@ -1,56 +1,65 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
-const getMongoData = require('./user_controller.js');
+const { check } = require('express-validator/check');
+const userData = require('./user_controller.js');
+const middleware = require('../common/middleware.js');
 
 const route = express.Router();
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
 
-module.exports = route.get('/login', (req, res) => {
-  console.log('from routes');
+route.get('/login', (req, res) => {
   res.status(200).render('login');
 });
 
-module.exports = route.get('/register', (req, res) => {
-  console.log('from routes');
-  res.status(200).render('register');
+route.get('/signup', (req, res) => {
+  res.status(200).render('signup');
 });
 
-module.exports = route.get('/logout', (req, res) => {
+route.get('/logout', (req, res) => {
   req.session.destroy();
-  res.header('Cache-Control', 'no-cache');
-  res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
   res.status(200).render('index');
 });
 
-const saltRounds = 10;
-module.exports = route.post('/checkuser', async (req, res) => {
+const loginMiddlewares = [
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  middleware.checkErrors,
+];
+
+route.post('/login', loginMiddlewares, async (req, res) => {
   const user = req.body;
-  const data = await getMongoData.findUser(user.email);
+  const data = await userData.findUser(user);
   if (data.length > 0) {
     if (bcrypt.compareSync(user.password, data[0].password)) {
       req.session.email = data[0].email;
       req.session.name = data[0].username;
-      res.status(200).render('home', { data: req.session.name });
+      res.status(200).render('home', { data: data[0].username });
     } else {
-      res.status(200).send('incorrect password');
+      res.status(401).send('incorrect password');
     }
   } else {
-    res.status(200).send('Your not in our db please <a href="/register">REGISTER</a>');
+    res.status(401).send('Your not in our db please <a href="/register">REGISTER</a>');
   }
 });
 
-module.exports = route.post('/adduser', async (req, res) => {
+const signupMiddlewares = [
+  check('username').isLength({ min: 3 }).withMessage('Username shoud be more than 4 characters'),
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  check('password1').isLength({ min: 3 }).withMessage('re-entered password should me more than 4 charactes'),
+  middleware.checkErrors,
+];
+
+route.post('/signup', signupMiddlewares, async (req, res) => {
   const user = req.body;
-  if (req.body.password !== req.body.password1) {
+  if (userData.checkPasswordMismatch(user.password, user.password1) === true) {
     res.status(200).send('<strong>password mismatch</strong> PLEASE GO BACK AND FILL PROPERLY');
     return;
   }
-  user.password = bcrypt.hashSync(user.password, saltRounds);
-  const data = await getMongoData.findUser(user.email);
+  const data = await userData.findUser(user);
   if (data.length === 0) {
-    getMongoData.addUser(user);
+    userData.addUser(user);
     res.status(200).render('login');
   } else { res.status(200).send('your already registered please <a href="/login">LOGIN</a>'); }
 });
+
+module.exports = route;

@@ -24,23 +24,23 @@
         <table class="table">
           <tbody>
               <tr>
-                  <td>ID:</td>
+                  <td>ID</td>
                   <td><%= data[0].id %></td>
               </tr>
               <tr>
-                  <td>NAME:</td>
+                  <td>NAME</td>
                   <td><%= data[0].name %></td>
               </tr>
               <tr>
-                    <td>ABOUT:</td>
-                    <td>:<%= data[0].about %></td>
+                    <td>ABOUT</td>
+                    <td><%= data[0].about %></td>
               </tr>
               <tr>
-                    <td>PLACE:</td>
+                    <td>PLACE</td>
                     <td><%= data[0].place %></td>
               </tr>
               <tr>
-                <td>BOOKS:</td>
+                <td>BOOKS</td>
                 <td><% for(let i=0; i < data.length; i++) { %>
                     <p><a href="/bookisbn/<%=data[i].isbn %>"><%=  data[i].title %></a></p>
                     <% } %>

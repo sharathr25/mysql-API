@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">82.35% </span>
+        <span class="strong">89.47% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>14/17</span>
+        <span class='fraction'>17/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/4</span>
+        <span class='fraction'>5/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/3</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">82.35% </span>
+        <span class="strong">89.47% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>14/17</span>
+        <span class='fraction'>17/19</span>
       </div>
     </div>
   </div>
@@ -69,21 +69,17 @@
 24
 25
 26
-27</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+27
+28
+29
+30</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -92,42 +88,55 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
-const getAuthorDbData = require('./author_controller.js');
+const author = require('./author_controller.js');
+const middleware = require('../common/middleware.js');
 &nbsp;
 const route = express.Router();
 &nbsp;
-module.exports = route.get('/authors', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-  const data = <span class="cstat-no" title="statement not covered" >await getAuthorDbData.getAuthors();</span>
-<span class="cstat-no" title="statement not covered" >  res.status(200).render('authors', { authordata: data[0] });</span>
-});
-&nbsp;
-module.exports = route.use('/author/:id', async (req, res, next) =&gt; {
-  const regex = /[0-9]+/;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (regex.test(req.params.id)) {
-    const authordata = await getAuthorDbData.getAuthorById(req.params.id);
-    if (authordata[0].length === 0) {
-      res.status(500).send('AUTHOR NOT FOUND');
-    } else next();
-  } else {
-<span class="cstat-no" title="statement not covered" >    res.status(500).send('AUTHOR NOT FOUND');</span>
+route.get('/authors', middleware.redirectLogin, async (req, res) =&gt; {
+  try {
+    const data = await author.getAuthors();
+    res.status(200).render('authors', { authordata: data[0] });
+  } catch (err) {
+<span class="cstat-no" title="statement not covered" >    res.status(200).send('some error happend please go back');</span>
   }
 });
 &nbsp;
-module.exports = route.get('/author/:id', async (req, res) =&gt; {
-  const authordata = await getAuthorDbData.getAuthorById(req.params.id, false);
-  res.status(200).render('author_details', { data: authordata[0] });
+route.get('/author/:id', middleware.redirectLogin, async (req, res) =&gt; {
+  const authorId = req.params.id;
+  const regex = /[0-9]+/;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (regex.test(authorId)) {
+    const data = await author.getAuthorById(authorId);
+    if (typeof data !== 'undefined' &amp;&amp; data[0].length === 0) {
+      res.status(404).send('AUTHOR NOT FOUND');
+    } else res.status(200).render('author_details', { data: data[0] });
+  } else {
+<span class="cstat-no" title="statement not covered" >    res.status(404).send('AUTHOR NOT FOUND');</span>
+  }
 });
+&nbsp;
+module.exports = route;
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Dec 25 2018 14:01:04 GMT+0530 (IST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 27 2018 15:58:56 GMT+0530 (IST)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

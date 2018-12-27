@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">89.47% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>16/22</span>
+        <span class='fraction'>17/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/4</span>
+        <span class='fraction'>5/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">89.47% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>16/22</span>
+        <span class='fraction'>17/19</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -74,18 +74,19 @@
 29
 30
 31
-32
-33
-34
-35</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+32</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -93,65 +94,55 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
-const getBookDbData = require('./book_controller.js');
+const book = require('./book_controller.js');
+const middleware = require('../common/middleware.js');
 &nbsp;
 const route = express.Router();
 &nbsp;
-// to render books page for localhost:port/books
-module.exports = route.get('/books', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-  const booksData = <span class="cstat-no" title="statement not covered" >await getBookDbData.getBooks();</span>
-<span class="cstat-no" title="statement not covered" >  res.status(200).render('books', { data: booksData[0] });</span>
+route.get('/books', middleware.redirectLogin, async (req, res) =&gt; {
+  try {
+    const booksData = await book.getBooks();
+    res.status(200).render('books', { data: booksData[0] });
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    res.status(500).send('some error happend please go back');</span>
+  }
 });
 &nbsp;
-module.exports = route.use('/bookisbn/:isbn', async (req, res, next) =&gt; {
+route.get('/bookisbn/:isbn', middleware.redirectLogin, async (req, res) =&gt; {
+  const isbnNo = req.params.isbn;
   const regex = /[0-9]+/;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (regex.test(req.params.isbn)) {
-    const bookData = await getBookDbData.getBookByIsbn(req.params.isbn);
-    if (bookData[0].length === 0) {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (regex.test(isbnNo)) {
+    const bookData = await book.getBookByIsbn(isbnNo);
+    if (typeof bookData !== 'undefined' &amp;&amp; bookData[0].length === 0) {
       res.status(500).send('BOOK NOT FOUND');
-    } else next();
+    } else {
+      res.status(200).render('book_details', { data: bookData[0] });
+    }
   } else {
 <span class="cstat-no" title="statement not covered" >    res.status(500).send('BOOK NOT FOUND');</span>
   }
 });
 &nbsp;
-module.exports = route.get('/bookisbn/:isbn', async (req, res) =&gt; {
-  const isbnNo = req.params.isbn;
-  const bookData = await getBookDbData.getBookByIsbn(isbnNo);
-  res.status(200).render('book_details', { data: bookData[0] });
-});
-&nbsp;
-module.exports = route.get('/bookbyauthor/:authorid', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-  const authorId = <span class="cstat-no" title="statement not covered" >req.params.authorid;</span>
-  const bookData = <span class="cstat-no" title="statement not covered" >await getBookDbData.getBookById(authorId);</span>
-<span class="cstat-no" title="statement not covered" >  res.status(200).render('book_details', { data: bookData });</span>
-});
+module.exports = route;
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Dec 25 2018 14:01:04 GMT+0530 (IST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 27 2018 15:58:56 GMT+0530 (IST)
 </div>
 </div>
 <script src="../../../prettify.js"></script>
