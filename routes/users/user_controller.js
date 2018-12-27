@@ -7,6 +7,11 @@ function hash(data) {
   return bcrypt.hashSync(data, saltRounds);
 }
 
+function comapare(password, user) {
+  if (bcrypt.compareSync(password, user.password)) { return true; }
+  return false;
+}
+
 let mongoDB;
 async function getConnection() {
   const url = 'mongodb://127.0.0.1:27017/users';
@@ -58,4 +63,5 @@ module.exports = {
   addUser: addUsertoDb,
   findUser: findUserFromDb,
   checkPasswordMismatch: checkPassword,
+  comparePassword: comapare,
 };

@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const logger = require('../../config/logger.js');
 
 function redirectLoginPage(req, res, next) {
@@ -6,20 +6,6 @@ function redirectLoginPage(req, res, next) {
     const message = 'requseted page is forbidden click <a href="/login">here</a> to LOGIN';
     res.status(403).send(message);
   } else { next(); }
-}
-
-function validate(req, res, next) {
-  const keys = Object.keys(req.body);
-  let valid = true;
-  for (let i = 0; i < keys.length; i += 1) {
-    if (req.body[keys[i]].length === 0) {
-      valid = false;
-      console.log(`${keys[i]} is empty`);
-      res.status(401).send(`<strong>${keys[i]}</strong> is empty PLEASE GO BACK AND FILL <strong>${keys[i]}</strong>`);
-      break;
-    }
-  }
-  if (valid) { next(); }
 }
 
 function cacheClear(req, res, next) {
@@ -32,7 +18,7 @@ function log(req, res, next) {
   next();
 }
 
-function check(req, res, next) {
+function checkErr(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const arr = errors.array();
@@ -43,10 +29,26 @@ function check(req, res, next) {
     res.status(401).send(message);
   } else { next(); }
 }
+
+const signupMiddlewares = [
+  check('username').isLength({ min: 3 }).withMessage('Username shoud be more than 4 characters'),
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  check('password1').isLength({ min: 3 }).withMessage('re-entered password should me more than 4 charactes'),
+  checkErr,
+];
+
+const loginMiddlewares = [
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  checkErr,
+];
+
 module.exports = {
-  validateForm: validate,
   redirectLogin: redirectLoginPage,
   clearCache: cacheClear,
   logUrl: log,
-  checkErrors: check,
+  checkErrors: checkErr,
+  validateSignUp: signupMiddlewares,
+  validateLogin: loginMiddlewares,
 };
