@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.52% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>19/29</span>
+        <span class='fraction'>21/21</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>4/5</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.86% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>19/28</span>
+        <span class='fraction'>21/21</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -95,7 +95,9 @@
 50
 51
 52
-53</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+53
+54
+55</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,20 +105,6 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,6 +128,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,7 +136,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { validationResult } = require('express-validator/check');
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { check, validationResult } = require('express-validator/check');
 const logger = require('../../config/logger.js');
 &nbsp;
 function redirectLoginPage(req, res, next) {
@@ -155,20 +159,6 @@ function redirectLoginPage(req, res, next) {
     const message = 'requseted page is forbidden click &lt;a href="/login"&gt;here&lt;/a&gt; to LOGIN';
     res.status(403).send(message);
   } else { next(); }
-}
-&nbsp;
-function <span class="fstat-no" title="function not covered" >validate(</span>req, res, next) {
-  const keys = <span class="cstat-no" title="statement not covered" >Object.keys(req.body);</span>
-  let valid = <span class="cstat-no" title="statement not covered" >true;</span>
-<span class="cstat-no" title="statement not covered" >  for (let i = 0; i &lt; keys.length; i += 1) {</span>
-<span class="cstat-no" title="statement not covered" >    if (req.body[keys[i]].length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >      valid = false;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(`${keys[i]} is empty`);</span>
-<span class="cstat-no" title="statement not covered" >      res.status(401).send(`&lt;strong&gt;${keys[i]}&lt;/strong&gt; is empty PLEASE GO BACK AND FILL &lt;strong&gt;${keys[i]}&lt;/strong&gt;`);</span>
-<span class="cstat-no" title="statement not covered" >      break;</span>
-    }
-  }
-<span class="cstat-no" title="statement not covered" >  if (valid) { <span class="cstat-no" title="statement not covered" >next(); </span>}</span>
 }
 &nbsp;
 function cacheClear(req, res, next) {
@@ -181,7 +171,7 @@ function log(req, res, next) {
   next();
 }
 &nbsp;
-function check(req, res, next) {
+function checkErr(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const arr = errors.array();
@@ -192,12 +182,28 @@ function check(req, res, next) {
     res.status(401).send(message);
   } else { next(); }
 }
+&nbsp;
+const signupMiddlewares = [
+  check('username').isLength({ min: 3 }).withMessage('Username shoud be more than 4 characters'),
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  check('password1').isLength({ min: 3 }).withMessage('re-entered password should me more than 4 charactes'),
+  checkErr,
+];
+&nbsp;
+const loginMiddlewares = [
+  check('email').isEmail().withMessage('email not correct'),
+  check('password').isLength({ min: 3 }).withMessage('password should me more than 4 charactes'),
+  checkErr,
+];
+&nbsp;
 module.exports = {
-  validateForm: validate,
   redirectLogin: redirectLoginPage,
   clearCache: cacheClear,
   logUrl: log,
-  checkErrors: check,
+  checkErrors: checkErr,
+  validateSignUp: signupMiddlewares,
+  validateLogin: loginMiddlewares,
 };
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -205,7 +211,7 @@ module.exports = {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 27 2018 22:19:19 GMT+0530 (IST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Dec 28 2018 11:50:31 GMT+0530 (IST)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

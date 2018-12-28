@@ -77,6 +77,7 @@ describe('checking book routes', () => {
       .get('/bookisbn/100')
       .expect(403)
       .end((err, res) => {
+        console.log(res.text);
         expect(res.text).to.have.string('requseted page is forbidden');
         console.log('----------------------------------------------');
         done();

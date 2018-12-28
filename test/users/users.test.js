@@ -1,6 +1,6 @@
 // eslint-disable-next-line prefer-destructuring
 const expect = require('chai').expect;
-const user = require('../../routes/users/user_controller.js');
+const user = require('../../src/users/user_controller.js');
 
 // testing users mongo db
 describe('testing mongodb', () => {

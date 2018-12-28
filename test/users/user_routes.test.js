@@ -90,7 +90,6 @@ describe('loading express', () => {
       .send('password=')
       .expect(200)
       .end((err, res) => {
-        console.log(res.text);
         expect(res.text).to.have.string('email not correct');
         console.log('----------------------------------------------');
         done();

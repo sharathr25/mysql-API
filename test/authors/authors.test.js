@@ -1,6 +1,6 @@
 // eslint-disable-next-line prefer-destructuring
 const expect = require('chai').expect;
-const author = require('../../routes/authors/author_controller.js');
+const author = require('../../src/authors/author_controller.js');
 
 // testing mysql book db
 describe('testing test database', () => {
@@ -9,8 +9,8 @@ describe('testing test database', () => {
       id: 1, name: 'osmani', about: 'programmer', place: 'LA',
     };
     const data = await author.getAuthors();
-    const author = data[0];
-    const authorData = JSON.stringify(author[0]);
+    const authorDbdata = data[0];
+    const authorData = JSON.stringify(authorDbdata[0]);
     authorTestData = JSON.stringify(authorTestData);
     expect(authorData).to.be.equal(authorTestData);
   });
@@ -19,8 +19,8 @@ describe('testing test database', () => {
     let authorTestData = {
       id: 1, name: 'osmani', about: 'programmer', place: 'LA',
     };
-    const author = data[0];
-    const authorData = JSON.stringify(author[0]);
+    const authorDbData = data[0];
+    const authorData = JSON.stringify(authorDbData[0]);
     authorTestData = JSON.stringify(authorTestData);
     expect(authorData).to.be.equal(authorTestData);
   });

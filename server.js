@@ -3,11 +3,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const logger = require('./config/logger.js');
 
-const bookRoute = require('./routes/books/book_route.js');
-const authorRoute = require('./routes/authors/author_route.js');
-const userRoute = require('./routes/users/users.js');
-const routes = require('./routes/routes.js');
-const middleware = require('./routes/common/middleware.js');
+const bookRoute = require('./src/books/book_route.js');
+const authorRoute = require('./src/authors/author_route.js');
+const userRoute = require('./src/users/user_routes.js');
+const routes = require('./src/home_routes.js');
+const middleware = require('./src/common/middleware.js');
 
 const app = express();
 
