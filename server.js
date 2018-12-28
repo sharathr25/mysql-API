@@ -1,95 +1,43 @@
 const express = require('express');
-const logger = require('./logger.js');
-const getDbData = require('./get_db_data.js');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const logger = require('./config/logger.js');
+
+const bookRoute = require('./src/books/book_route.js');
+const authorRoute = require('./src/authors/author_route.js');
+const userRoute = require('./src/users/user_routes.js');
+const routes = require('./src/home_routes.js');
+const middleware = require('./src/common/middleware.js');
 
 const app = express();
-const route = express.Router();
+
 app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
 
-route.use((req, res, next) => {
-  logger.log('info', req.url);
-  next();
-});
+// create application/x-www-form-urlencoded parser
+app.use(bodyParser.urlencoded({ extended: true }));
 
-route.get('/', (req, res) => {
-  res.status(200).render('home');
-});
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+}));
 
-route.get('/login', (req, res) => {
-  res.status(200).render('login');
-});
+app.use(middleware.clearCache);
 
-route.get('/register', (req, res) => {
-  res.status(200).render('register');
-});
+// whenver a URL comes we are logging
+app.use(middleware.logUrl);
 
-route.get('/books.ejs', async (req, res) => {
-  const booksData = await getDbData.getBooks(false);
-  res.status(200).render('books', { data: booksData[0] });
-});
+app.use(bookRoute);
+app.use(authorRoute);
+app.use(userRoute);
+app.use(routes);
 
-route.get('/authors.ejs', async (req, res) => {
-  const data = await getDbData.getAuthors();
-  res.status(200).render('authors', { authordata: data[0] });
-});
+const port = process.env.PORT || 4000;
 
-route.use('/bookisbn/:isbn', async (req, res, next) => {
-  const regex = /[0-9]+/;
-  if (regex.test(req.params.isbn)) {
-    const bookData = await getDbData.getBookByIsbn(req.params.isbn, false);
-    if (bookData[0].length === 0) {
-      res.status(500).send('BOOK NOT FOUND');
-    } else next();
-  } else {
-    res.status(500).send('BOOK NOT FOUND');
-  }
+const server = app.listen(port, () => {
+  logger.log('info', `app listening at port ${port}`);
 });
-
-route.get('/bookisbn/:isbn', async (req, res) => {
-  const isbnNo = req.params.isbn;
-  const bookData = await getDbData.getBookByIsbn(isbnNo);
-  res.status(200).render('book_details', { data: bookData[0] });
-});
-
-route.get('/bookbyauthor/:authorid', async (req, res) => {
-  const authorId = req.params.authorid;
-  const bookData = await getDbData.getBookById(authorId);
-  res.status(200).render('book_details', { data: bookData });
-});
-
-route.use('/author/:id', async (req, res, next) => {
-  const regex = /[0-9]+/;
-  if (regex.test(req.params.id)) {
-    console.log(req.params.id);
-    const authordata = await getDbData.getAuthorById(req.params.id, false);
-    console.log(authordata[0].length);
-    if (authordata[0].length === 0) {
-      res.status(500).send('AUTHOR NOT FOUND');
-    } else next();
-  } else {
-    res.status(500).send('AUTHOR NOT FOUND');
-  }
-});
-
-route.get('/author/:id', async (req, res) => {
-  const authordata = await getDbData.getAuthorById(req.params.id, false);
-  res.status(200).render('author_details', { data: authordata[0] });
-});
-
-route.post('/adduser', (req, res) => {
-  res.status(200).send('hello new user');
-});
-
-route.get('*', (req, res) => {
-  res.status(404).render('error');
-});
-
-const server = app.listen(4000, () => {
-  console.log('app listening at port 4000');
-  logger.log('info', 'listening');
-});
-
-app.use('/', route);
 
 module.exports = server;
