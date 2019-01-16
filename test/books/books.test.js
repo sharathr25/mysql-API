@@ -1,7 +1,6 @@
 // eslint-disable-next-line prefer-destructuring
 const expect = require('chai').expect;
 const book = require('../../src/books/book_controller.js');
-const review = require('../../src/books/get_book_review');
 
 // testing mysql book db
 describe('testing test database', () => {
@@ -48,12 +47,5 @@ describe('testing test database', () => {
     const bookDbData = data[0];
     expect(bookDbData).to.be.an('array');
     expect(bookDbData.length).to.be.equal(0);
-  });
-  it('getting book review', async () => {
-    const bookReview = await review.getReview(123);
-    const rating = bookReview[0];
-    const totalRatings = bookReview[1];
-    expect(rating).to.be.equal('3.68');
-    expect(totalRatings).to.be.equal('19');
   });
 });

@@ -1,50 +1,38 @@
 const request = require('supertest');
-const session = require('supertest-session');
-// eslint-disable-next-line prefer-destructuring
-const expect = require('chai').expect;
+const { expect } = require('chai');
 
 describe('checking book routes', () => {
   let server;
-  let testSession;
-  let authenticatedSession;
   beforeEach(() => {
     // eslint-disable-next-line global-require
     server = require('../../server.js');
-    testSession = session(server);
-  });
-  beforeEach((done) => {
-    testSession.post('/login')
-      .send('email=abcd@gmail.com')
-      .send('password=1234')
-      .expect(200)
-      .end(() => {
-        authenticatedSession = testSession;
-        return done();
-      });
   });
   afterEach(() => {
     server.close();
   });
   it('responds to /books -status 200', (done) => {
-    authenticatedSession.get('/books')
+    request(server)
+      .get('/api/books')
       .expect(200)
       .end((err, res) => {
-        expect(res.text).to.have.string('ISBN');
+        expect(res.text).to.have.string('"isbn":123,"title":"abcd"');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /bookisbn/valid isbn -status 200', (done) => {
-    authenticatedSession.get('/bookisbn/123')
+  it('responds to /books/valid isbn -status 200', (done) => {
+    request(server)
+      .get('/api/books/123')
       .expect(200)
       .end((err, res) => {
-        expect(res.text).to.have.string('DESCRIPTION');
+        expect(res.text).to.have.string('"isbn":123,"title":"abcd"');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /bookisbn/invalid isbn -status 500', (done) => {
-    authenticatedSession.get('/bookisbn/100')
+  it('responds to /books/invalid isbn -status 500', (done) => {
+    request(server)
+      .get('/api/books/100')
       .expect(404)
       .end((err, res) => {
         expect(res.text).to.have.string('BOOK NOT FOUND');
@@ -52,33 +40,68 @@ describe('checking book routes', () => {
         done();
       });
   });
-  it('responds to /books without loggin in', (done) => {
+  it('responds to /books/invalid isbn -status 500', (done) => {
     request(server)
-      .get('/books')
-      .expect(403)
+      .get('/api/books/abc')
+      .expect(404)
       .end((err, res) => {
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('BOOK NOT FOUND');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /bookisbn/isbn with valid isbn without loggin in', (done) => {
+  it('responds to POST /api/books -status 500', (done) => {
     request(server)
-      .get('/bookisbn/123')
-      .expect(403)
+      .post('/api/books')
+      .send(
+        {
+          isbn: 1234,
+          title: 'some',
+          subtitle: 'some',
+          publishedOn: '2019-01-07',
+          publisher: 'some',
+          pages: 7,
+          description: 'some',
+          imgsrc: 'images/9781449328252.jpeg',
+          id: 1,
+        },
+      )
+      .expect(404)
       .end((err, res) => {
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('book inserted');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /books/isbn with invalid isbn without loggin in', (done) => {
+  it('responds to /authors/invalid isbn -status 500', (done) => {
     request(server)
-      .get('/bookisbn/100')
-      .expect(403)
+      .put('/api/books/1234')
+      .send(
+        {
+          isbn: 1234,
+          title: 'something',
+          subtitle: 'something',
+          publishedOn: '2019-01-07',
+          publisher: 'some',
+          pages: 7,
+          description: 'some',
+          imgsrc: 'images/9781449328252.jpeg',
+          id: 1,
+        },
+      )
+      .expect(404)
       .end((err, res) => {
-        console.log(res.text);
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('book updated');
+        console.log('----------------------------------------------');
+        done();
+      });
+  });
+  it('responds to /authors/invalid isbn -status 500', (done) => {
+    request(server)
+      .delete('/api/books/1234')
+      .expect(404)
+      .end((err, res) => {
+        expect(res.text).to.have.string('book deleted');
         console.log('----------------------------------------------');
         done();
       });

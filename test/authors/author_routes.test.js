@@ -1,50 +1,41 @@
-const session = require('supertest-session');
 const request = require('supertest');
 // eslint-disable-next-line prefer-destructuring
 const expect = require('chai').expect;
 
 describe('loading express', () => {
+  process.env.DATABASE = 'test';
+  process.env.PORT = 7000;
   let server;
-  let testSession;
-  let authenticatedSession;
   beforeEach(() => {
     // eslint-disable-next-line global-require
     server = require('../../server.js');
-    testSession = session(server);
-  });
-  beforeEach((done) => {
-    testSession.post('/login')
-      .send('email=abcd@gmail.com')
-      .send('password=1234')
-      .expect(200)
-      .end(() => {
-        authenticatedSession = testSession;
-        return done();
-      });
   });
   afterEach(() => {
     server.close();
   });
   it('responds to /authors  ', (done) => {
-    authenticatedSession.get('/authors')
+    request(server)
+      .get('/api/authors')
       .expect(200)
       .end((err, res) => {
-        expect(res.text).to.have.string('AUTHOR NAME');
+        expect(res.text).to.have.string('"id":1,"name":"osmani","about":"programmer","place":"LA"');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /author/valid author id  ', (done) => {
-    authenticatedSession.get('/author/1')
+  it('responds to /authors/valid author id  ', (done) => {
+    request(server)
+      .get('/api/authors/1')
       .expect(200)
       .end((err, res) => {
-        expect(res.text).to.have.string('NAME');
+        expect(res.text).to.have.string('"id":1,"name":"osmani","about":"programmer","place":"LA"');
         console.log('----------------------------------------------');
         done();
       });
   });
   it('responds to /author/invalid author id', (done) => {
-    authenticatedSession.get('/author/100')
+    request(server)
+      .get('/api/authors/100')
       .expect(404)
       .end((err, res) => {
         expect(res.text).to.have.string('AUTHOR NOT FOUND');
@@ -52,32 +43,58 @@ describe('loading express', () => {
         done();
       });
   });
-  it('responds to /authors/ author id without logging in', (done) => {
+  it('responds to /author/invalid author id', (done) => {
     request(server)
-      .get('/authors')
-      .expect(403)
+      .get('/api/authors/abc')
+      .expect(404)
       .end((err, res) => {
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('AUTHOR NOT FOUND');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /author/1 author id without logging in', (done) => {
+  it('responds to POST /api/books -status 500', (done) => {
     request(server)
-      .get('/author/1')
-      .expect(403)
+      .post('/api/authors')
+      .send(
+        {
+          id: '11',
+          name: 'kumar',
+          place: 'mysore',
+          about: 'nothing',
+        },
+      )
+      .expect(404)
       .end((err, res) => {
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('author inserted');
         console.log('----------------------------------------------');
         done();
       });
   });
-  it('responds to /author/100 author id without logging in', (done) => {
+  it('responds to /authors/invalid isbn -status 500', (done) => {
     request(server)
-      .get('/author/100')
-      .expect(403)
+      .put('/api/authors/11')
+      .send(
+        {
+          id: '',
+          name: 'kumar',
+          place: '',
+          about: '',
+        },
+      )
+      .expect(404)
       .end((err, res) => {
-        expect(res.text).to.have.string('requseted page is forbidden');
+        expect(res.text).to.have.string('author updated');
+        console.log('----------------------------------------------');
+        done();
+      });
+  });
+  it('responds to /authors/invalid isbn -status 500', (done) => {
+    request(server)
+      .delete('/api/authors/11')
+      .expect(404)
+      .end((err, res) => {
+        expect(res.text).to.have.string('author deleted');
         console.log('----------------------------------------------');
         done();
       });

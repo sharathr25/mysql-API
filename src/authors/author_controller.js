@@ -10,7 +10,41 @@ async function getAuthorDataById(id) {
   return db.executeQuery(sql, [id]);
 }
 
+async function updateAuthorDataById(id, author) {
+  const parameters = [
+    author.name,
+    author.about,
+    author.place,
+    id,
+  ];
+  const sql = `update authors
+               set
+               name=?,
+               about=?,
+               place=? where id=?`;
+  return db.executeQuery(sql, parameters);
+}
+
+async function insertAuthorData(author) {
+  const parameters = [
+    author.id,
+    author.name,
+    author.about,
+    author.place,
+  ];
+  const sql = 'insert into authors values(?,?,?,?);';
+  return db.executeQuery(sql, parameters);
+}
+
+function deleteAuthorDataById(id) {
+  const sql = 'delete from authors where id=?';
+  return db.executeQuery(sql, [id]);
+}
+
 module.exports = {
   getAuthors: getAuthorsData,
   getAuthorById: getAuthorDataById,
+  updateAuthorById: updateAuthorDataById,
+  insertAuthor: insertAuthorData,
+  deleteAuthorById: deleteAuthorDataById,
 };

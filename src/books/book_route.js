@@ -1,20 +1,49 @@
 const express = require('express');
 const book = require('./book_controller.js');
-const middleware = require('../common/middleware.js');
-const review = require('./get_book_review');
 
 const route = express.Router();
 
-route.get('/books', middleware.redirectLogin, async (req, res) => {
+route.get('/api/books', async (req, res) => {
   try {
     const booksData = await book.getBooks();
-    res.status(200).render('books', { data: booksData[0] });
+    res.status(200).json(booksData[0]);
   } catch (error) {
     res.status(500).send('some error happend please go back');
   }
 });
 
-route.get('/bookisbn/:isbn', middleware.redirectLogin, async (req, res) => {
+route.post('/api/books', async (req, res) => {
+  const bookData = req.body;
+  try {
+    await book.insertBook(bookData);
+    res.status(200).send('book inserted');
+  } catch (error) {
+    res.status(500).send('some error happend please go back');
+  }
+});
+
+route.put('/api/books/:isbn', async (req, res) => {
+  const isbnNo = req.params.isbn;
+  const bookData = req.body;
+  try {
+    await book.updateBookByIsbn(isbnNo, bookData);
+    res.status(200).send('book updated');
+  } catch (error) {
+    res.status(500).send('some error happend please go back');
+  }
+});
+
+route.delete('/api/books/:isbn', async (req, res) => {
+  const isbnNo = req.params.isbn;
+  try {
+    await book.deleteBook(isbnNo);
+    res.status(200).send('book deleted');
+  } catch (error) {
+    res.status(500).send('some error happend please go back');
+  }
+});
+
+route.get('/api/books/:isbn', async (req, res) => {
   const isbnNo = req.params.isbn;
   const regex = /[0-9]+/;
   if (regex.test(isbnNo)) {
@@ -22,13 +51,7 @@ route.get('/bookisbn/:isbn', middleware.redirectLogin, async (req, res) => {
     if (typeof bookData !== 'undefined' && bookData[0].length === 0) {
       res.status(500).send('BOOK NOT FOUND');
     } else {
-      const bookReview = await review.getReview(isbnNo);
-      const rating = bookReview[0];
-      const totalRatings = bookReview[1];
-      const widget = bookReview[2];
-      res.status(200).set('content-type', 'text/html').render('book_details', {
-        data: bookData[0], rating, totalRatings, widget,
-      });
+      res.status(200).json(bookData[0]);
     }
   } else {
     res.status(500).send('BOOK NOT FOUND');
