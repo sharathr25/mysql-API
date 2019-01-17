@@ -7,7 +7,6 @@ async function execute(sql, parameters) {
     url = config.productionUrl;
   }
   url.database = process.env.DATABASE || url.database;
-  console.log(url);
   const connection = await mysql.createConnection(url);
   let data;
   try {
