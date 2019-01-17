@@ -8,6 +8,7 @@ route.get('/api/books', async (req, res) => {
     const booksData = await book.getBooks();
     res.status(200).json(booksData[0]);
   } catch (error) {
+    console.log(error);
     res.status(500).send('some error happend please go back');
   }
 });
@@ -18,6 +19,7 @@ route.post('/api/books', async (req, res) => {
     await book.insertBook(bookData);
     res.status(200).send('book inserted');
   } catch (error) {
+    console.log(error);
     res.status(500).send('some error happend please go back');
   }
 });

@@ -2,8 +2,13 @@ const mysql = require('mysql2/promise');
 const config = require('../../config/db_config');
 
 async function execute(sql, parameters) {
-  config.db.database = process.env.DATABASE || config.db.database;
-  const connection = await mysql.createConnection(config.db);
+  let url = config.devUrl;
+  if (process.env.NODE_ENV === 'production') {
+    url = config.productionUrl;
+  }
+  url.database = process.env.DATABASE || url.database;
+  console.log(url);
+  const connection = await mysql.createConnection(url);
   let data;
   try {
     if (parameters !== 'undefined') {

@@ -1,10 +1,19 @@
-const dbConfig = {
+const dev = {
   host: 'localhost',
   user: 'sharath',
   password: 'drowssap',
   database: 'webbook',
 };
 
+const production = {
+  host: 'books.ccmvwadqp8x8.ap-south-1.rds.amazonaws.com',
+  user: 'root',
+  password: 'drowssap',
+  database: 'webbook',
+  port: 3306,
+};
+
 module.exports = {
-  db: dbConfig,
+  devUrl: dev,
+  productionUrl: production,
 };
