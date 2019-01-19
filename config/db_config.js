@@ -1,8 +1,9 @@
 const dev = {
-  host: '10.10.4.173',
+  host: 'localhost',
   user: 'sharath',
   password: 'drowssap',
   database: 'webbook',
+  port: 3306,
 };
 
 const production = {
