@@ -10,9 +10,6 @@ module.exports = {
     watch: false,
     max_memory_restart: '1G',
     env: {
-      NODE_ENV: 'development',
-    },
-    env_production: {
       NODE_ENV: 'production',
     },
   }],
@@ -24,7 +21,7 @@ module.exports = {
       host: '52.66.237.135',
       ref: 'origin/master',
       repo: 'git@gitlab.com:mountblue/dec-2018-js-backend/08-sharath-mysql-api.git',
-      path: '/home/ec2-user/var/www/production/mysql-API',
+      path: '/home/ec2-user/mysql-API',
       'post-setup': 'npm install && npm start',
     },
   },
