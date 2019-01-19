@@ -15,8 +15,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@gitlab.com:mountblue/dec-2018-js-backend/08-sharath-mysql-api.git',
       path: '/home/ec2-user/mysql-API/',
-      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
-      'post-setup': 'pm2 start ecosystem.config.js',
+      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production && pm2 start ecosystem.config.js',
     },
   },
 };
