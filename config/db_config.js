@@ -1,5 +1,5 @@
 const dev = {
-  host: 'localhost',
+  host: '10.10.4.173',
   user: 'sharath',
   password: 'drowssap',
   database: 'webbook',
