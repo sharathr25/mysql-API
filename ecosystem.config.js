@@ -4,7 +4,7 @@ module.exports = {
     script: 'server.js',
     args: 'one two',
     instances: 1,
-    autorestart: true,
+    autorestart: false,
     watch: false,
     max_memory_restart: '1G',
     env: {
