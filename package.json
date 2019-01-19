@@ -4,7 +4,7 @@
   "description": "A website which allow you see some book details",
   "main": "server.js",
   "scripts": {
-    "test": "mocha -w --recursive",
+    "test": "mocha -w --recursive --exit",
     "lint": "esw -w './**/*.js'",
     "coverage": "watch istanbul cover _mocha test/*",
     "lint-once": "eslint './**/*.js'",
