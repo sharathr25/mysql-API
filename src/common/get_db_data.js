@@ -3,7 +3,7 @@ const config = require('../../config/db_config');
 
 async function execute(sql, parameters) {
   let url = config.devUrl;
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' || process.env.DATABASE === 'test') {
     url = config.productionUrl;
   }
   url.database = process.env.DATABASE || url.database;

@@ -7,7 +7,7 @@ async function createDatabase() {
     user: ownerdata.user,
     password: ownerdata.password,
   });
-  const dataBaseName = 'webbook';
+  const dataBaseName = 'test';
   const sql = `create database ${dataBaseName}`;
   await connection.query(sql);
   connection.close();
