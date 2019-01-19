@@ -15,7 +15,7 @@
     "create-tables": "node create_tables.js",
     "insert-data-to-database": "node insert_to_table.js",
     "migrate": "npm run create-database && npm run create-tables && npm run insert-data-to-database",
-    "start": "nodemon server.js",
+    "start": "pm2 start ecosystem.config.js",
     "production": "NODE_ENV='production' nodemon server.js"
   },
   "author": "Sharath",
